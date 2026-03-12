@@ -13,24 +13,33 @@ variable "environment" {
   type        = string
 }
 
-variable "vpc_cidr" {
-  description = "CIDR block for VPC"
-  type        = string
-}
-
 variable "azs" {
   description = "Availability zones"
   type        = list(string)
 }
 
-variable "public_subnets" {
-  description = "Public subnet CIDRs"
-  type        = list(string)
+variable "vpc_linux_cidr" {
+  type = string
 }
 
-variable "private_subnets" {
-  description = "Private subnet CIDRs"
-  type        = list(string)
+variable "vpc_windows_cidr" {
+  type = string
+}
+
+variable "linux_public_subnets" {
+  type = list(string)
+}
+
+variable "linux_private_subnets" {
+  type = list(string)
+}
+
+variable "windows_public_subnets" {
+  type = list(string)
+}
+
+variable "windows_private_subnets" {
+  type = list(string)
 }
 
 variable "enable_nat_gateway" {

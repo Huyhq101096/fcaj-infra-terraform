@@ -1,19 +1,15 @@
-output "vpc_id" {
-  description = "VPC ID"
-  value       = module.vpc.vpc_id
+output "linux_vpc_id" {
+  value = module.vpc_linux.vpc_id
 }
 
-output "vpc_cidr_block" {
-  description = "VPC CIDR block"
-  value       = module.vpc.vpc_cidr_block
+output "windows_vpc_id" {
+  value = module.vpc_windows.vpc_id
 }
 
-output "public_subnets" {
-  description = "Public subnet IDs"
-  value       = module.vpc.public_subnets
+output "linux_public_subnets" {
+  value = module.vpc_linux.public_subnets
 }
 
-output "private_subnets" {
-  description = "Private subnet IDs"
-  value       = module.vpc.private_subnets
+output "windows_public_subnets" {
+  value = module.vpc_windows.public_subnets
 }
