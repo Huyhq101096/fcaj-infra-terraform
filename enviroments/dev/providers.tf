@@ -13,3 +13,13 @@ provider "aws" {
   region = var.aws_region
   #   profile = "fcaj-dev"
 }
+
+terraform {
+  backend "s3" {
+    bucket       = "fcaj-terraform-state"
+    key          = "dev/terraform.tfstate"
+    region       = "ap-southeast-1"
+    use_lockfile = true
+    encrypt = true
+  }
+}
