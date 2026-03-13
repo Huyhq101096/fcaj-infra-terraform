@@ -53,3 +53,34 @@ variable "single_nat_gateway" {
   type        = bool
   default     = true
 }
+
+# Port variables for security group configuration
+variable "ssh_port" {
+  description = "Port number for SSH access to Linux EC2 instances"
+  type        = number
+  default     = 22
+}
+
+variable "http_port" {
+  description = "Port number for HTTP access to web applications"
+  type        = number
+  default     = 80
+}
+
+variable "https_port" {
+  description = "Port number for HTTPS access to web applications"
+  type        = number
+  default     = 443
+}
+
+variable "nodejs_app_port" {
+  description = "Port number for Node.js application"
+  type        = number
+  default     = 5000
+}
+
+variable "allowed_cidr_blocks" {
+  description = "List of CIDR blocks allowed to access the security group. Default allows access from anywhere (use with caution in production)"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}

@@ -64,6 +64,7 @@ run : $env:AWS_PROFILE = "fcaj-dev"
 run : aws configure --profile fcaj-dev
 
 echo $env:AWS_PROFILE : xem đang sử dụng profile nào
+aws sts get-caller-identity : xem đang sử dụng account nào
 $env:AWS_PROFILE = "fcaj-dev" : đổi thông tin profile đang sử dụng
 
 aws configure --profile fcaj-dev : tạo và config profile

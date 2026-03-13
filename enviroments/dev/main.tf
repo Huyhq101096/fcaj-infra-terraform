@@ -34,15 +34,55 @@ module "vpc_linux" {
 }
 
 
-# module sg_linux_ec2 {
-#   source = "../../modules/terraform-aws-security-group"
+module "sg_linux_ec2" {
+  source = "../../modules/terraform-aws-security-group"
 
-#   name = "${local.name}-linux-sg"
-#   description = "Security group for Linux EC2"
-#   vpc_id      = module.vpc_linux.vpc_id
+  name        = "${local.name}-linux-sg"
+  description = "Security group for Linux EC2"
+  vpc_id      = module.vpc_linux.vpc_id
+
+  # 1. Inbound Rules [1]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = var.ssh_port
+      to_port     = var.ssh_port
+      protocol    = "tcp"
+      description = "SSH access"
+      cidr_blocks = join(",", var.allowed_cidr_blocks)
+    },
+    {
+      from_port   = var.http_port
+      to_port     = var.http_port
+      protocol    = "tcp"
+      description = "HTTP access"
+      cidr_blocks = join(",", var.allowed_cidr_blocks)
+    },
+    {
+      from_port   = var.https_port
+      to_port     = var.https_port
+      protocol    = "tcp"
+      description = "HTTPS access"
+      cidr_blocks = join(",", var.allowed_cidr_blocks)
+    },
+    {
+      from_port   = var.nodejs_app_port
+      to_port     = var.nodejs_app_port
+      protocol    = "tcp"
+      description = "Node.js app"
+      cidr_blocks = join(",", var.allowed_cidr_blocks)
+    }
+  ]
+
+  # 2. Outbound Rules [2]
+  egress_rules = ["all-all"]
+
+  # 3. Tags [2][3]
+  tags = merge(local.common_tags, {
+    Name = "${local.name}-linux-sg"
+  })
 
 
-# }
+}
 
 
 

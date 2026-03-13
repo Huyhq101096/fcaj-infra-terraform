@@ -21,3 +21,9 @@ windows_private_subnets = ["10.1.11.0/24", "10.1.12.0/24"]
 
 enable_nat_gateway = true
 single_nat_gateway = true
+
+ssh_port            = 22
+http_port           = 80
+https_port          = 443
+nodejs_app_port     = 5000
+allowed_cidr_blocks = ["0.0.0.0/0"]
