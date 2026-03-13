@@ -79,6 +79,18 @@ variable "nodejs_app_port" {
   default     = 5000
 }
 
+variable "rdp_port" {
+  description = "Port number for RDP access to Windows EC2 instances"
+  type        = number
+  default     = 3389
+}
+
+variable "mysql_port" {
+  description = "Port number for MySQL/Aurora database access"
+  type        = number
+  default     = 3306
+}
+
 variable "allowed_cidr_blocks" {
   description = "List of CIDR blocks allowed to access the security group. Default allows access from anywhere (use with caution in production)"
   type        = list(string)
