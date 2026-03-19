@@ -22,6 +22,8 @@ module "vpc_linux" {
   public_subnets  = var.linux_public_subnets
   private_subnets = var.linux_private_subnets
 
+  map_public_ip_on_launch = true
+
   # enable_nat_gateway = var.enable_nat_gateway
   # single_nat_gateway = var.single_nat_gateway
 
@@ -84,6 +86,26 @@ module "sg_linux_ec2" {
 
 }
 
+module "linux_key_pair" {
+  source = "../../modules/terraform-aws-key-pair"
+
+  key_name = "${local.name}-linux-key-pair"
+  create_private_key = true
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name}-linux-kp"
+    OS   = "linux"
+  })
+
+}
+
+
+# resource "local_file" "linux_private_key" {
+#   content         = module.linux_key_pair.private_key_pem
+#   filename        = "${path.module}/${local.name}-linux-key-pair.pem"
+#   file_permission = "0400"
+# }
+
 
 
 
@@ -100,6 +122,8 @@ module "vpc_windows" {
   azs             = var.azs
   public_subnets  = var.windows_public_subnets
   private_subnets = var.windows_private_subnets
+
+  map_public_ip_on_launch = true
 
   # enable_nat_gateway = var.enable_nat_gateway
   # single_nat_gateway = var.single_nat_gateway
@@ -187,3 +211,56 @@ module "sg_windows_ec2" {
     OS   = "windows"
   })
 }
+
+module "windows_key_pair" {
+  source = "../../modules/terraform-aws-key-pair"
+
+  key_name = "${local.name}-windows-key-pair"
+  create_private_key = true
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name}-windows-kp"
+    OS   = "windows"
+  })
+
+}
+
+# resource "local_file" "windows_private_key" {
+#   content         = module.windows_key_pair.private_key_pem
+#   filename        = "${path.module}/${local.name}-windows-key-pair.pem"
+#   file_permission = "0400"
+# }
+
+
+
+################################
+# Windows EC2 Instance
+################################
+
+module "windows_ec2" {
+  source = "../../modules/terraform-aws-ec2-instance"
+
+#   # Instance Configuration
+  name          = "${local.name}-windows-ec2"
+  instance_type = var.windows_instance_type
+  ami           = var.windows_ami_id
+  key_name      = module.windows_key_pair.key_pair_name
+
+#   # Network Configuration
+  subnet_id                   = module.vpc_windows.public_subnets[0]
+  vpc_security_group_ids      = [module.sg_windows_ec2.security_group_id]
+  associate_public_ip_address = true
+
+#   # Windows-specific Configuration
+  get_password_data = true
+  monitoring        = false
+
+#   # Tags
+  tags = merge(local.common_tags, {
+    Name = "Windows-instance"
+    OS   = "windows"
+  })
+
+}
+
+

@@ -27,3 +27,6 @@ http_port           = 80
 https_port          = 443
 nodejs_app_port     = 5000
 allowed_cidr_blocks = ["0.0.0.0/0"]
+
+windows_ami_id = "ami-0103222b1413a47f2"
+windows_instance_type = "t3.micro"

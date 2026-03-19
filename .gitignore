@@ -76,3 +76,5 @@ secrets.tfvars.json
 Thumbs.db
 
 .kiro/**
+
+*.pem

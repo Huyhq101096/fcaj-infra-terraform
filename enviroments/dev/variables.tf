@@ -96,3 +96,13 @@ variable "allowed_cidr_blocks" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
+
+variable "windows_ami_id" {
+  description = "Windows AMI ID for Windows EC2 instances"
+  type        = string
+}
+
+variable "windows_instance_type" {
+  description = "Instance type for Windows EC2 instances"
+  type        = string
+}
