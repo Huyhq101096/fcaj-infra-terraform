@@ -89,7 +89,7 @@ module "sg_linux_ec2" {
 module "linux_key_pair" {
   source = "../../modules/terraform-aws-key-pair"
 
-  key_name = "${local.name}-linux-key-pair"
+  key_name           = "${local.name}-linux-key-pair"
   create_private_key = true
 
   tags = merge(local.common_tags, {
@@ -104,6 +104,27 @@ module "linux_key_pair" {
 #   content         = module.linux_key_pair.private_key_pem
 #   filename        = "${path.module}/${local.name}-linux-key-pair.pem"
 #   file_permission = "0400"
+# }
+
+# module "linux_ec2" {
+#   source = "../../modules/terraform-aws-ec2-instance"
+
+#   # Instance Configuration
+#   name          = "${local.name}-linux-ec2"
+#   instance_type = var.linux_instance_type
+#   ami           = var.linux_ami_id
+#   key_name      = module.linux_key_pair.key_pair_name
+
+#   # Network Configuration
+#   subnet_id                   = module.vpc_linux.public_subnets[0]
+#   vpc_security_group_ids      = [module.sg_linux_ec2.security_group_id]
+#   associate_public_ip_address = true
+
+#   # Tags
+#   tags = merge(local.common_tags, {
+#     Name = "Linux-instance"
+#     OS   = "linux"
+#   })
 # }
 
 
@@ -215,7 +236,7 @@ module "sg_windows_ec2" {
 module "windows_key_pair" {
   source = "../../modules/terraform-aws-key-pair"
 
-  key_name = "${local.name}-windows-key-pair"
+  key_name           = "${local.name}-windows-key-pair"
   create_private_key = true
 
   tags = merge(local.common_tags, {
@@ -231,36 +252,30 @@ module "windows_key_pair" {
 #   file_permission = "0400"
 # }
 
-
-
-################################
-# Windows EC2 Instance
-################################
-
-module "windows_ec2" {
-  source = "../../modules/terraform-aws-ec2-instance"
+# module "windows_ec2" {
+#   source = "../../modules/terraform-aws-ec2-instance"
 
 #   # Instance Configuration
-  name          = "${local.name}-windows-ec2"
-  instance_type = var.windows_instance_type
-  ami           = var.windows_ami_id
-  key_name      = module.windows_key_pair.key_pair_name
+#   name          = "${local.name}-windows-ec2"
+#   instance_type = var.windows_instance_type
+#   ami           = var.windows_ami_id
+#   key_name      = module.windows_key_pair.key_pair_name
 
 #   # Network Configuration
-  subnet_id                   = module.vpc_windows.public_subnets[0]
-  vpc_security_group_ids      = [module.sg_windows_ec2.security_group_id]
-  associate_public_ip_address = true
+#   subnet_id                   = module.vpc_windows.public_subnets[0]
+#   vpc_security_group_ids      = [module.sg_windows_ec2.security_group_id]
+#   associate_public_ip_address = true
 
 #   # Windows-specific Configuration
-  get_password_data = true
-  monitoring        = false
+#   get_password_data = true
+#   monitoring        = false
 
 #   # Tags
-  tags = merge(local.common_tags, {
-    Name = "Windows-instance"
-    OS   = "windows"
-  })
+#   tags = merge(local.common_tags, {
+#     Name = "Windows-instance"
+#     OS   = "windows"
+#   })
 
-}
+# }
 
 
