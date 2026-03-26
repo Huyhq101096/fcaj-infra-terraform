@@ -19,8 +19,8 @@ module "vpc_linux" {
   cidr = var.vpc_linux_cidr
 
   azs             = var.azs
-  public_subnets  = var.linux_public_subnets
-  private_subnets = var.linux_private_subnets
+  public_subnets  = var.public_subnets
+  private_subnets = var.private_subnets
 
   map_public_ip_on_launch = true
 
@@ -157,94 +157,94 @@ module "vpc_windows" {
   })
 }
 
-module "sg_windows_ec2" {
-  source = "../../modules/terraform-aws-security-group"
+# module "sg_windows_ec2" {
+#   source = "../../modules/terraform-aws-security-group"
 
-  name        = "${local.name}-windows-sg"
-  description = "Security group for Windows EC2"
-  vpc_id      = module.vpc_windows.vpc_id
+#   name        = "${local.name}-windows-sg"
+#   description = "Security group for Windows EC2"
+#   vpc_id      = module.vpc_windows.vpc_id
 
-  # Inbound Rules
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = var.ssh_port
-      to_port     = var.ssh_port
-      protocol    = "tcp"
-      description = "SSH access"
-      cidr_blocks = join(",", var.allowed_cidr_blocks)
-    },
-    {
-      from_port   = var.http_port
-      to_port     = var.http_port
-      protocol    = "tcp"
-      description = "HTTP access"
-      cidr_blocks = join(",", var.allowed_cidr_blocks)
-    },
-    {
-      from_port   = var.https_port
-      to_port     = var.https_port
-      protocol    = "tcp"
-      description = "HTTPS access"
-      cidr_blocks = join(",", var.allowed_cidr_blocks)
-    },
-    {
-      from_port   = var.rdp_port
-      to_port     = var.rdp_port
-      protocol    = "tcp"
-      description = "RDP access"
-      cidr_blocks = join(",", var.allowed_cidr_blocks)
-    },
-    {
-      from_port   = -1
-      to_port     = -1
-      protocol    = "icmp"
-      description = "ICMP IPv4"
-      cidr_blocks = join(",", var.allowed_cidr_blocks)
-    },
-    {
-      from_port   = -1
-      to_port     = -1
-      protocol    = "58"
-      description = "ICMP IPv6"
-      cidr_blocks = join(",", var.allowed_cidr_blocks)
-    },
-    {
-      from_port   = var.nodejs_app_port
-      to_port     = var.nodejs_app_port
-      protocol    = "tcp"
-      description = "Node.js app"
-      cidr_blocks = join(",", var.allowed_cidr_blocks)
-    },
-    {
-      from_port   = var.mysql_port
-      to_port     = var.mysql_port
-      protocol    = "tcp"
-      description = "MySQL/Aurora"
-      cidr_blocks = join(",", var.allowed_cidr_blocks)
-    }
-  ]
+#   # Inbound Rules
+#   ingress_with_cidr_blocks = [
+#     {
+#       from_port   = var.ssh_port
+#       to_port     = var.ssh_port
+#       protocol    = "tcp"
+#       description = "SSH access"
+#       cidr_blocks = join(",", var.allowed_cidr_blocks)
+#     },
+#     {
+#       from_port   = var.http_port
+#       to_port     = var.http_port
+#       protocol    = "tcp"
+#       description = "HTTP access"
+#       cidr_blocks = join(",", var.allowed_cidr_blocks)
+#     },
+#     {
+#       from_port   = var.https_port
+#       to_port     = var.https_port
+#       protocol    = "tcp"
+#       description = "HTTPS access"
+#       cidr_blocks = join(",", var.allowed_cidr_blocks)
+#     },
+#     {
+#       from_port   = var.rdp_port
+#       to_port     = var.rdp_port
+#       protocol    = "tcp"
+#       description = "RDP access"
+#       cidr_blocks = join(",", var.allowed_cidr_blocks)
+#     },
+#     {
+#       from_port   = -1
+#       to_port     = -1
+#       protocol    = "icmp"
+#       description = "ICMP IPv4"
+#       cidr_blocks = join(",", var.allowed_cidr_blocks)
+#     },
+#     {
+#       from_port   = -1
+#       to_port     = -1
+#       protocol    = "58"
+#       description = "ICMP IPv6"
+#       cidr_blocks = join(",", var.allowed_cidr_blocks)
+#     },
+#     {
+#       from_port   = var.nodejs_app_port
+#       to_port     = var.nodejs_app_port
+#       protocol    = "tcp"
+#       description = "Node.js app"
+#       cidr_blocks = join(",", var.allowed_cidr_blocks)
+#     },
+#     {
+#       from_port   = var.mysql_port
+#       to_port     = var.mysql_port
+#       protocol    = "tcp"
+#       description = "MySQL/Aurora"
+#       cidr_blocks = join(",", var.allowed_cidr_blocks)
+#     }
+#   ]
 
-  # Outbound Rules
-  egress_rules = ["all-all"]
+#   # Outbound Rules
+#   egress_rules = ["all-all"]
 
-  tags = merge(local.common_tags, {
-    Name = "${local.name}-windows-sg"
-    OS   = "windows"
-  })
-}
+#   tags = merge(local.common_tags, {
+#     Name = "${local.name}-windows-sg"
+#     OS   = "windows"
+#   })
+# }
 
-module "windows_key_pair" {
-  source = "../../modules/terraform-aws-key-pair"
+# module "windows_key_pair" {
+#   source = "../../modules/terraform-aws-key-pair"
 
-  key_name           = "${local.name}-windows-key-pair"
-  create_private_key = true
+#   key_name           = "${local.name}-windows-key-pair"
+#   create_private_key = true
 
-  tags = merge(local.common_tags, {
-    Name = "${local.name}-windows-kp"
-    OS   = "windows"
-  })
+#   tags = merge(local.common_tags, {
+#     Name = "${local.name}-windows-kp"
+#     OS   = "windows"
+#   })
 
-}
+# }
 
 # resource "local_file" "windows_private_key" {
 #   content         = module.windows_key_pair.private_key_pem

@@ -11,8 +11,8 @@ vpc_linux_cidr   = "10.0.0.0/16"
 vpc_windows_cidr = "10.1.0.0/16"
 
 
-linux_public_subnets  = ["10.0.1.0/24", "10.0.2.0/24"]
-linux_private_subnets = ["10.0.11.0/24", "10.0.12.0/24"]
+public_subnets  = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnets = ["10.0.11.0/24", "10.0.12.0/24"]
 
 
 windows_public_subnets  = ["10.1.1.0/24", "10.1.2.0/24"]

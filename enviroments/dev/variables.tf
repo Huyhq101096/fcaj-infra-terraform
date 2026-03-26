@@ -26,11 +26,11 @@ variable "vpc_windows_cidr" {
   type = string
 }
 
-variable "linux_public_subnets" {
+variable "public_subnets" {
   type = list(string)
 }
 
-variable "linux_private_subnets" {
+variable "private_subnets" {
   type = list(string)
 }
 
